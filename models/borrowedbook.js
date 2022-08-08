@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class BorrowedBook extends Model {
     /**
@@ -11,16 +9,29 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      BorrowedBook.belongsTo(models.Book, { foreignKey: "bookId" });
+      BorrowedBook.belongsTo(models.Member, { foreignKey: "userId" });
     }
   }
-  BorrowedBook.init({
-    bookId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
-    borrowDate: DataTypes.DATE,
-    returnDate: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'BorrowedBook',
-  });
+  BorrowedBook.init(
+    {
+      bookId: DataTypes.INTEGER,
+      // references: { model: "Books", key: "id" },
+      // onDelete: "cascade",
+      // onUpdate: "cascade",
+
+      userId: DataTypes.INTEGER,
+      // references: { model: "Members", key: "id" },
+      // onDelete: "cascade",
+      // onUpdate: "cascade",
+
+      borrowDate: DataTypes.DATE,
+      returnDate: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: "BorrowedBook",
+    }
+  );
   return BorrowedBook;
 };
