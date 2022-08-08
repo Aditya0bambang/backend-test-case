@@ -3,7 +3,7 @@
 const { Book, Member, BorrowedBook, Penalty } = require("../models/index");
 
 class Controller {
-  static async checkMember(req, res) {
+  static async checkMember(req, res, next) {
     try {
       const allMember = await Member.findAll({
         include: [
@@ -11,13 +11,19 @@ class Controller {
         ],
         attributes: { exclude: ["id", "createdAt", "updatedAt"] },
       });
+      allMember.forEach((person, index) => {
+        allMember[index].dataValues.BorrowedBooks =
+          allMember[index].BorrowedBooks.length;
+        // console.log(person.BorrowedBooks, "====");
+      });
+      console.log(allMember);
       res.status(200).json({
         statusCode: 200,
         allMember,
       });
     } catch (error) {
-      //   next(error);
       console.log(error);
+      next(error);
     }
   }
 
@@ -31,11 +37,11 @@ class Controller {
           { model: BorrowedBook, required: false, foreignKey: "userId" },
         ],
       });
-      const borrowed = await BorrowedBook.findAll({ where: { userId: id } });
+      //   const borrowed = await BorrowedBook.findAll({ where: { userId: id } });
       //   console.log(user);
       if (!user) {
         throw new Error("User not found");
-      } else if (borrowed.length >= 2) {
+      } else if (user.BorrowedBooks.length >= 2) {
         throw new Error("This user already borrow two books");
       }
 
@@ -83,11 +89,12 @@ class Controller {
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
-        statusCode: 500,
-        error: error.message,
-        // errors,
-      });
+      next(error);
+      //   res.status(500).json({
+      //     statusCode: 500,
+      //     error: error.message,
+      //     // errors,
+      //   });
     }
   }
 
@@ -97,9 +104,9 @@ class Controller {
       const { id, name } = req.body;
       const user = await Member.findByPk(id, {
         where: { name },
-        include: [
-          { model: BorrowedBook, required: false, foreignKey: "userId" },
-        ],
+        // include: [
+        //   { model: BorrowedBook, required: false, foreignKey: "userId" },
+        // ],
       });
       if (!user) {
         throw new Error("User not found");
@@ -143,11 +150,12 @@ class Controller {
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
-        statusCode: 500,
-        error: error.message,
-        // errors,
-      });
+      next(error);
+      //   res.status(500).json({
+      //     statusCode: 500,
+      //     error: error.message,
+      //     // errors,
+      //   });
     }
   }
 }

@@ -9,6 +9,13 @@ const routes = require("./routes/index");
 
 app.use("/", routes);
 
+app.use((err, req, res, next) => {
+  res.status(500).json({
+    statusCode: 500,
+    error: err.message,
+  });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);
 });
