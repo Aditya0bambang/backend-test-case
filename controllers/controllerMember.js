@@ -15,13 +15,11 @@ class Controller {
         allMember[index].dataValues.BorrowedBooks =
           allMember[index].BorrowedBooks.length;
       });
-      console.log(allMember);
       res.status(200).json({
         statusCode: 200,
         allMember,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
