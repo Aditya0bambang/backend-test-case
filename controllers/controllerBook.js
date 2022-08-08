@@ -14,8 +14,7 @@ class Controller {
         availableBook,
       });
     } catch (error) {
-      //   next(error);
-      console.log(error);
+      next(error);
     }
   }
 }

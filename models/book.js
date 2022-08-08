@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       author: DataTypes.STRING,
       stock: DataTypes.INTEGER,
-      // status: DataTypes.STRING,
     },
     {
       sequelize,

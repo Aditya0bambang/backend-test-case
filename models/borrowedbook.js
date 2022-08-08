@@ -16,15 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   BorrowedBook.init(
     {
       bookId: DataTypes.INTEGER,
-      // references: { model: "Books", key: "id" },
-      // onDelete: "cascade",
-      // onUpdate: "cascade",
-
       userId: DataTypes.INTEGER,
-      // references: { model: "Members", key: "id" },
-      // onDelete: "cascade",
-      // onUpdate: "cascade",
-
       borrowDate: DataTypes.DATE,
       returnDate: DataTypes.DATE,
     },
